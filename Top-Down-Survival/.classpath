@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Top-Down-Survival/AfterLife/src"/>
+	<classpathentry kind="output" path="Top-Down-Survival/AfterLife/out/production/Zombie-Land"/>
+</classpath>
