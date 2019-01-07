@@ -470,7 +470,7 @@ public class GameScreen extends JFrame {
 
             g.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             g.setColor(Color.WHITE);
-            g.drawString("Health: " + player.getHealth(), GameScreen.WIDTH - 150, 25);
+            g.drawString("Health: " + player.getHealth(), GameScreen.WIDTH - 150, 25);//----------------------------
 
             // draw avg fps and other information
             averageFPS = frameCounter.getFrameRate();
