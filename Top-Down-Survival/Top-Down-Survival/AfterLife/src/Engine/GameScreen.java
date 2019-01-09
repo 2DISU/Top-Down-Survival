@@ -9,6 +9,7 @@ import Utilities.FrameRateCounter;
 import Utilities.HighScoreTemplate;
 import Utilities.Sound;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,7 +23,7 @@ public class GameScreen extends JFrame {
 
     private GamePanel panel;
     private Graphics2D g;
-    private BufferedImage image;
+    private BufferedImage image,gui;
 
     private GameStateManager gsm;
     private Point point;
@@ -84,7 +85,12 @@ public class GameScreen extends JFrame {
         setCursor(Toolkit.getDefaultToolkit().createCustomCursor(
                 new ImageIcon("Resources/Screen Utilities/crosshair.png").getImage(), new Point(17 / 2, 17 / 2), "custom cursor"));
         this.pack();
+        try {
+        	gui = (ImageIO.read(new File("Resources/Screen Utilities/sgui.png")));
+        	} catch (IOException e) {
+        }
 
+        
         game_music.setVolumeUp(4f);
         game_music.Loop();
     }
@@ -437,7 +443,7 @@ public class GameScreen extends JFrame {
         private void gameRender() throws IOException {
             // map draw
             gsm.draw(g);
-
+           
             // enemy draw
             for (Enemy enemy : enemies) {
                 enemy.draw(g);
@@ -461,7 +467,7 @@ public class GameScreen extends JFrame {
                 projectile.draw(g);
             }
 
-
+           
             // player health draw
             g.setColor(new Color(255,0,0,127));
             g.fill(healthBar);
@@ -482,7 +488,9 @@ public class GameScreen extends JFrame {
             g.drawString("Score: " + gameScore, 10, 45);
             g.drawString("Shotgun ammo: " + player.getShotgunAmmo(), 10, 60);
             g.drawString("Gauss ammo: " + player.getGaussAmmo(), 10, 70);
-
+           
+            
+            
             // player died
             if(player.isDead()) {
                 //sound control
@@ -504,6 +512,7 @@ public class GameScreen extends JFrame {
 
             }
 
+            
             // draw wave number
             if(waveStartTimer != 0 && !gameEnded) {
                 g.setFont(new Font("Century Gothic", Font.PLAIN, 28));
@@ -540,6 +549,7 @@ public class GameScreen extends JFrame {
         private void gameDraw() {
             Graphics g2 = getGraphics();
             try {
+            	
                 g2.drawImage(image, 0, 0, null);
                 g2.dispose();
             } catch (NullPointerException e) {
