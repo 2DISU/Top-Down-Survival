@@ -86,7 +86,7 @@ public class GameScreen extends JFrame {
                 new ImageIcon("Resources/Screen Utilities/crosshair.png").getImage(), new Point(17 / 2, 17 / 2), "custom cursor"));
         this.pack();
         try {
-        	gui = (ImageIO.read(new File("Resources/Screen Utilities/sgui.png")));
+        	gui = (ImageIO.read(new File("Resources/Screen Utilities/gui.png")));
         	} catch (IOException e) {
         }
 
@@ -474,6 +474,8 @@ public class GameScreen extends JFrame {
             g.setColor(Color.BLACK);
             g.draw(healthBar);
 
+            
+            g.drawImage(gui,0,0,null);
             g.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             g.setColor(Color.WHITE);
             g.drawString("Health: " + player.getHealth(), GameScreen.WIDTH - 150, 25);//----------------------------
@@ -614,13 +616,13 @@ public class GameScreen extends JFrame {
                 player_run.Play();
             }
 
-            if (key.getKeyCode() == KeyEvent.VK_S) {
-                player.setDown(true);
+            if (key.getKeyCode() == KeyEvent.VK_A) {
+                player.setLeft(true);
                 player_run.Play();
             }
 
-            if (key.getKeyCode() == KeyEvent.VK_A) {
-                player.setLeft(true);
+            if (key.getKeyCode() == KeyEvent.VK_S) {
+                player.setDown(true);
                 player_run.Play();
             }
 
