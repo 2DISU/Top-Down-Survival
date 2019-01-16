@@ -8,6 +8,7 @@ import Models.Projectiles;
 import Utilities.FrameRateCounter;
 import Utilities.HighScoreTemplate;
 import Utilities.Sound;
+import Utilities.gameTime;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +17,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+
 
 public class GameScreen extends JFrame {
     public static int WIDTH = 1280;
@@ -28,12 +30,13 @@ public class GameScreen extends JFrame {
     private GameStateManager gsm;
     private Point point;
 
-    private Timer timer;
+    private Timer fps;
     private FrameRateCounter frameCounter;
 
     private int FPS = 1000 / 60;
     private int averageFPS;
 
+    private gameTime Time=new gameTime();
     public static Player player;
     public static ArrayList<Projectiles> projectiles;
     public static ArrayList<Projectiles> enemyProjectiles;
@@ -120,7 +123,7 @@ public class GameScreen extends JFrame {
             init();
             
             // This is the game loop.
-            timer = new Timer(FPS, event -> {
+            fps = new Timer(FPS, event -> {
                 frameCounter.submitReading();
 
                 try {
@@ -137,7 +140,7 @@ public class GameScreen extends JFrame {
 
                 if (player.isDead() && player.getAnimator() || gameEnded == true) {
 
-                    timer.stop();
+                   fps.stop();
 
                     try{
                         checkHighScore(gameScore);
@@ -149,8 +152,8 @@ public class GameScreen extends JFrame {
 
             });
 
-            timer.setRepeats(true);
-            timer.start();
+            fps.setRepeats(true);
+            fps.start();
         }
 
         // The initialization of our game
@@ -166,7 +169,7 @@ public class GameScreen extends JFrame {
             enemyProjectiles = new ArrayList<>();
             enemies = new ArrayList<>();
             bonuses = new ArrayList<>();
-
+            Time.start();
             waveStartTimer = 0;
             waveStartTimerDiff = 0;
             waveStart = true;
@@ -484,14 +487,13 @@ public class GameScreen extends JFrame {
             g.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             g.setColor(Color.WHITE);
             g.drawString("Health: " + player.getHealth(),WIDTH - 278, 50);//----------------------------
-           
+
             // draw avg fps and other information
             averageFPS = frameCounter.getFrameRate();
             g.setFont(new Font("Century Gothic", Font.PLAIN, 12));
             g.setColor(Color.WHITE);
             g.drawString("FPS: " + averageFPS, 10, 10);
             g.drawString("Zombie counter: " + deadEnemiesCounter, 10, 20);
-            g.drawString("Bullet counter: " + projectiles.size(), 10, 30);
             g.setFont(new Font("Century Gothic", Font.BOLD,24));
             g.drawString("Score: " + gameScore, 600, 20);
            
@@ -503,17 +505,20 @@ public class GameScreen extends JFrame {
             else if (player.weaponType==2)
             {
             	g.drawImage(wUI2,0,0,null);
-            	 g.setFont(new Font("Century Gothic", Font.PLAIN, 12));
-                 g.drawString("Shotgun ammo: " + player.getShotgunAmmo(), 10, 60);
-                 g.drawString("Gauss ammo: " + player.getGaussAmmo(), 10, 70);
+            	g.setFont(new Font("Century Gothic", Font.BOLD, 14));
+                g.drawString(""+ player.getShotgunAmmo(), 150, 550);
+                
             }
             else
             {
             	g.drawImage(wUI3,0,0,null);
+            	g.setFont(new Font("Century Gothic", Font.BOLD, 14));
+            	g.drawString(""+player.getGaussAmmo(), 150, 550);
             }
             
             // player died
             if(player.isDead()) {
+            	Time.stop();
                 //sound control
                 game_music.Close();
                 player_run.Close();
@@ -525,6 +530,9 @@ public class GameScreen extends JFrame {
                 String str = "G A M E    O V E R   ! ! !";
                 int length = (int) g.getFontMetrics().getStringBounds(str, g).getWidth();
                 g.drawString(str, GameScreen.WIDTH / 2 - length / 2, GameScreen.HEIGHT / 2);
+                g.setFont(new Font("Century Gothic", Font.PLAIN, 24));
+                g.drawString("You survived for "+(int)Time.getTime()+" seconds",GameScreen.WIDTH / 2 - length / 2+25, GameScreen.HEIGHT / 2+100);
+                
 
                 g.setFont(new Font("Century Gothic", Font.PLAIN, 26));
                 str = "press ESC to go back to Menu.";
@@ -558,7 +566,9 @@ public class GameScreen extends JFrame {
                 String str = "YOU WON AGAINST THE ZOMBIE HORDE !!! CONGRATS !!!";
                 int length = (int) g.getFontMetrics().getStringBounds(str, g).getWidth();
                 g.drawString(str, GameScreen.WIDTH / 2 - length / 2, GameScreen.HEIGHT / 2);
-
+                g.setFont(new Font("Century Gothic", Font.PLAIN, 24));
+                g.drawString("You survived for "+(int)Time.getTime()+" seconds",GameScreen.WIDTH / 2 - length / 2+25, GameScreen.HEIGHT / 2+100);
+     
                 g.setFont(new Font("Century Gothic", Font.PLAIN, 26));
                 str = "press ESC to go back to Menu.";
                 length = (int) g.getFontMetrics().getStringBounds(str, g).getWidth();
@@ -621,10 +631,10 @@ public class GameScreen extends JFrame {
         public void keyPressed(KeyEvent key) {
             if (key.getKeyCode() == KeyEvent.VK_SPACE) {
                 if(gamePause) {
-                    timer.start();
+                    fps.start();
                     gamePause = false;
                 }else{
-                    timer.stop(); 
+                    fps.stop(); 
                     gamePause = true;
                     pause.Menu();
                 }
@@ -666,7 +676,7 @@ public class GameScreen extends JFrame {
             if (key.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 game_music.Close();
                 setVisible(false);
-                timer.stop();
+                fps.stop();
                 dispose();
                 StartScreen menu = new StartScreen();
                 menu.setVisible(true);

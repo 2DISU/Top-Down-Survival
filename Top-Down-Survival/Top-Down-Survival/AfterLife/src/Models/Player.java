@@ -41,7 +41,7 @@ public class Player{
     private long firingDelay = 100; // firing speed
     public int weaponType;
     private int shotgunAmmo;
-    private int gaussAmmo;
+    private int rifleAmmo;
 
     private boolean isDead;
 
@@ -103,7 +103,7 @@ public class Player{
 
         this.bullets = new ArrayList<>();
         this.shotgunAmmo = 100;
-        this.gaussAmmo = 10;
+        this.rifleAmmo = 10;
         this.weaponType = 1;
 
         this.playerBorder = new Rectangle(this.x, this.y, this.width-20, this.height - 8);
@@ -144,7 +144,7 @@ public class Player{
 
     public int getShotgunAmmo() { return this.shotgunAmmo; }
 
-    public int getGaussAmmo() { return this.gaussAmmo; }
+    public int getGaussAmmo() { return this.rifleAmmo; }
 
     public Rectangle getPlayerBorder() {
         return this.playerBorder;
@@ -175,7 +175,7 @@ public class Player{
     }
 
     public void addGaussAmmo(int ammo) {
-        this.gaussAmmo += ammo;
+        this.rifleAmmo += ammo;
     }
 
     public void hit(double damageTaken) {
@@ -313,7 +313,7 @@ public class Player{
                 break;
             // rifle
             case 3:
-                if (this.firing && this.gaussAmmo > 0) {
+                if (this.firing && this.rifleAmmo > 0) {
                     int firingSpread = (int) ((Math.random() * 5) - 3);
                     long elapsed = (System.nanoTime() - this.firingTimer) / 1000000;
                     this.firingDelay = 600;
@@ -323,7 +323,7 @@ public class Player{
                         bullet.setSpeed(40);
                         GameScreen.projectiles.add(bullet);
                         firingTimer = System.nanoTime();
-                        this.gaussAmmo--;
+                        this.rifleAmmo--;
 
 
                         player_shoot_gauss.setVolumeDown(11f);
