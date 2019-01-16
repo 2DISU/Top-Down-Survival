@@ -39,7 +39,7 @@ public class Player{
     private boolean firing = false;
     private long firingTimer = System.nanoTime();
     private long firingDelay = 100; // firing speed
-    private int weaponType;
+    public int weaponType;
     private int shotgunAmmo;
     private int gaussAmmo;
 
@@ -277,6 +277,7 @@ public class Player{
 
                         player_shoot_ak74.setVolumeDown(16f);
                         player_shoot_ak74.PlayGunSound();
+                        
                     }
                 }
                 break;

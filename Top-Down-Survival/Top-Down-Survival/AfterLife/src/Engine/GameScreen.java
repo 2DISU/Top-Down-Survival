@@ -23,7 +23,7 @@ public class GameScreen extends JFrame {
 
     private GamePanel panel;
     private Graphics2D g;
-    private BufferedImage image,gui;
+    private BufferedImage image,gui,wUI1,wUI2,wUI3;
 
     private GameStateManager gsm;
     private Point point;
@@ -53,11 +53,12 @@ public class GameScreen extends JFrame {
     public static int difficult;
 
     private boolean gamePause = false;
-
+    private PauseScreen pause = new PauseScreen();
+    
     private boolean gameEnded;
 
     //Health Bar
-    private Rectangle healthBar = new Rectangle(WIDTH - 210, 10,200 ,20);
+    private Rectangle healthBar = new Rectangle(WIDTH - 260, 50,200 ,20);
 
     //In-Game Sounds.
     private Sound game_music = new Sound("sound/Game/Till I Collapse.wav");
@@ -87,6 +88,9 @@ public class GameScreen extends JFrame {
         this.pack();
         try {
         	gui = (ImageIO.read(new File("Resources/Screen Utilities/gui.png")));
+        	wUI1 = (ImageIO.read(new File("Resources/Screen Utilities/pistolUI.png")));
+        	wUI2 = (ImageIO.read(new File("Resources/Screen Utilities/shotgunUI.png")));
+        	wUI3 = (ImageIO.read(new File("Resources/Screen Utilities/rifleUI.png")));
         	} catch (IOException e) {
         }
 
@@ -469,17 +473,18 @@ public class GameScreen extends JFrame {
 
            
             // player health draw
-            g.setColor(new Color(255,0,0,127));
+            g.setColor(new Color(200,0,0));//127));
             g.fill(healthBar);
             g.setColor(Color.BLACK);
             g.draw(healthBar);
 
             
             g.drawImage(gui,0,0,null);
+            
             g.setFont(new Font("Century Gothic", Font.PLAIN, 14));
             g.setColor(Color.WHITE);
-            g.drawString("Health: " + player.getHealth(), GameScreen.WIDTH - 150, 25);//----------------------------
-
+            g.drawString("Health: " + player.getHealth(),WIDTH - 278, 50);//----------------------------
+           
             // draw avg fps and other information
             averageFPS = frameCounter.getFrameRate();
             g.setFont(new Font("Century Gothic", Font.PLAIN, 12));
@@ -487,11 +492,25 @@ public class GameScreen extends JFrame {
             g.drawString("FPS: " + averageFPS, 10, 10);
             g.drawString("Zombie counter: " + deadEnemiesCounter, 10, 20);
             g.drawString("Bullet counter: " + projectiles.size(), 10, 30);
-            g.drawString("Score: " + gameScore, 10, 45);
-            g.drawString("Shotgun ammo: " + player.getShotgunAmmo(), 10, 60);
-            g.drawString("Gauss ammo: " + player.getGaussAmmo(), 10, 70);
+            g.setFont(new Font("Century Gothic", Font.BOLD,24));
+            g.drawString("Score: " + gameScore, 600, 20);
            
-            
+           
+            if (player.weaponType==1)
+            {
+            	g.drawImage(wUI1,0,0,null);
+            }
+            else if (player.weaponType==2)
+            {
+            	g.drawImage(wUI2,0,0,null);
+            	 g.setFont(new Font("Century Gothic", Font.PLAIN, 12));
+                 g.drawString("Shotgun ammo: " + player.getShotgunAmmo(), 10, 60);
+                 g.drawString("Gauss ammo: " + player.getGaussAmmo(), 10, 70);
+            }
+            else
+            {
+            	g.drawImage(wUI3,0,0,null);
+            }
             
             // player died
             if(player.isDead()) {
@@ -605,8 +624,9 @@ public class GameScreen extends JFrame {
                     timer.start();
                     gamePause = false;
                 }else{
-                    timer.stop();
+                    timer.stop(); 
                     gamePause = true;
+                    pause.Menu();
                 }
             }
 

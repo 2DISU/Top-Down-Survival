@@ -307,10 +307,11 @@ public class StartScreen extends JFrame {
                 "filled with deadly disease and turns everyone that had <br>" +
                 "contact with it to a mutated creature, which is hungry for flesh.<br>" +
                 "Your task is to eliminate all threats and survive the Apocalypse.<br><br>" +
-                "&#9Button configuration:<br>" +
+                //"&#9Button configuration:<br>" +
                 "1.\"W, S, D, A\" - Move commands.<br>" +
                 "2.\"Mouse Left Click\" - Fire.<br>" +
                 "3.\"1, 2 or 3\" - Change weapons.<br>" +
+                "4.\"space\" - Opens pause menu.<br>" +
                 "Good Luck in your endeavour. You will need it ...</html>";
         return helpText;
     }
