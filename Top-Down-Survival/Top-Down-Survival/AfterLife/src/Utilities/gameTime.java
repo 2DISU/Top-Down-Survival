@@ -14,6 +14,6 @@ public class gameTime {
 	}
 	public long getTime()
 	{
-		return (stopT-startT)/1000000000;
+		return ((stopT-startT)/1000000000);
 	}
 }

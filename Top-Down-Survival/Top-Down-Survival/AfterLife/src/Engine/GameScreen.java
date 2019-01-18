@@ -56,7 +56,7 @@ public class GameScreen extends JFrame {
     public static int difficult;
 
     private boolean gamePause = false;
-    private PauseScreen pause = new PauseScreen();
+    
     
     private boolean gameEnded;
 
@@ -558,6 +558,7 @@ public class GameScreen extends JFrame {
 
             // game ending message draw
             if (gameEnded) {
+            	Time.stop();
                 //sound control
                 game_music.Close();
                 victory_music.PlayOnce();
@@ -567,7 +568,7 @@ public class GameScreen extends JFrame {
                 int length = (int) g.getFontMetrics().getStringBounds(str, g).getWidth();
                 g.drawString(str, GameScreen.WIDTH / 2 - length / 2, GameScreen.HEIGHT / 2);
                 g.setFont(new Font("Century Gothic", Font.PLAIN, 24));
-                g.drawString("You survived for "+(int)Time.getTime()+" seconds",GameScreen.WIDTH / 2 - length / 2+25, GameScreen.HEIGHT / 2+100);
+                g.drawString("You survived for "+(int)Time.getTime()+" seconds",GameScreen.WIDTH / 2 - length / 2+200, GameScreen.HEIGHT / 2+100);
      
                 g.setFont(new Font("Century Gothic", Font.PLAIN, 26));
                 str = "press ESC to go back to Menu.";
@@ -588,7 +589,10 @@ public class GameScreen extends JFrame {
                 e.printStackTrace();
             }
         }
-
+        public void pauseDraw()
+    	{
+    		  g.drawString("LUGMA",GameScreen.WIDTH / 2 - GameScreen.HEIGHT / 2+200, GameScreen.HEIGHT / 2+100);
+    	}
         // The wave spawn method.
         private void createNewEnemies() {
             enemies.clear();
@@ -622,24 +626,13 @@ public class GameScreen extends JFrame {
     }
 
     private class KeyAdapter implements KeyListener {
-        @Override
+    	@Override
         public void keyTyped(KeyEvent key) {
             // not needed
         }
 
         @Override
         public void keyPressed(KeyEvent key) {
-            if (key.getKeyCode() == KeyEvent.VK_SPACE) {
-                if(gamePause) {
-                    fps.start();
-                    gamePause = false;
-                }else{
-                    fps.stop(); 
-                    gamePause = true;
-                    pause.Menu();
-                }
-            }
-
 
             if (key.getKeyCode() == KeyEvent.VK_W) {
                 player.setUp(true);
