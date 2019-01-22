@@ -367,6 +367,10 @@ public class GameScreen extends JFrame {
                     }
                 }
             }
+            if (deadEnemiesCounter==0)
+            {
+            	 createNewEnemies();
+            }
         }
 
         // Checking the player high score and compare it with the others
@@ -634,6 +638,18 @@ public class GameScreen extends JFrame {
         @Override
         public void keyPressed(KeyEvent key) {
 
+        	  if (key.getKeyCode() == KeyEvent.VK_SPACE) {
+                  if(gamePause) {
+                      Time.start();
+                      fps.start();
+                      gamePause = false;
+                  }else{
+                      Time.stop(); 
+                      fps.stop(); 
+                      gamePause = true;
+                    
+                  }
+        	}
             if (key.getKeyCode() == KeyEvent.VK_W) {
                 player.setUp(true);
                 player_run.Play();
